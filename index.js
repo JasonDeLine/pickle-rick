@@ -58,3 +58,11 @@ function writeToFile(fileName, data) {
     err ? console.error(err) : console.log('README file generated successfully!')
   );
 }
+
+// function that initializes program
+function init() {
+  inquirer.prompt(questions).then((answers) => {
+    const markdown = generateMarkdown(answers);
+    writeToFile('README.md', markdown);
+  });
+}
