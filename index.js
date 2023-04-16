@@ -159,7 +159,7 @@ ${data.tests}
 
 If you have any questions, please contact the project owner by clicking on the email listed below. 
 
-[![GitHub followers](https://img.shields.io/github/followers/${data.github}?style=social)](https://github.com/${data.github})
+[![GitHub followers](https://img.shields.io/github/followers/${data.githubUsername}?style=social)](https://github.com/${data.githubUsername})
 [![Twitter Follow](https://img.shields.io/twitter/follow/${data.twitter}?style=social)](https://twitter.com/${data.twitter})
 [${data.email}](mailto:${data.email})
 `;
