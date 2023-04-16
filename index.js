@@ -1,6 +1,6 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const generateMarkdown = require('./utilities/generateMarkdown');
+// const generateMarkdown = require('./generateMarkdown');
 
 // array of questions for user input
 const questions = [
@@ -67,5 +67,80 @@ function init() {
   });
 }
 
+
+
 // call function to initialize
 init();
+
+
+function generateMarkdown(data) {
+  return `
+# ${data.title}
+
+${renderLicenseBadge(data.license)}
+
+## Description
+
+${data.description}
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
+
+## Installation
+
+${data.installation}
+
+## Usage
+
+${data.usage}
+
+${renderLicenseSection(data.license)}
+
+## Contributing
+
+${data.contributing}
+
+## Tests
+
+${data.tests}
+
+## Questions
+
+If you have any questions, please contact the project owner by clicking on the email listed below. 
+
+[![GitHub followers](https://img.shields.io/github/followers/${data.github}?style=social)](https://github.com/${data.github})
+[![Twitter Follow](https://img.shields.io/twitter/follow/${data.twitter}?style=social)](https://twitter.com/${data.twitter})
+[${data.email}](mailto:${data.email})
+`;
+}
+
+function renderLicenseBadge(license) {
+  const badge = license === 'Unlicense' ? 'unlicense-blue.svg' : `${license}-blue.svg`;
+  return `![License](https://img.shields.io/badge/License-${badge})`;
+}
+
+function renderLicenseLink(license) {
+  return {
+    'MIT': '[https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT)',
+    'Apache-2.0': '[https://opensource.org/licenses/Apache-2.0](https://opensource.org/licenses/Apache-2.0)',
+    'GPL-3.0': '[https://www.gnu.org/licenses/gpl-3.0.en.html](https://www.gnu.org/licenses/gpl-3.0.en.html)',
+    'BSD-3-Clause': '[https://opensource.org/licenses/BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)',
+    'Unlicense': '[http://unlicense.org/](http://unlicense.org/)',
+  }[license] || '';
+}
+
+function renderLicenseSection(license) {
+  const link = renderLicenseLink(license);
+  if (!link) return '';
+  return `
+## License
+
+This application is covered by the ${license} license. [${link}](${link})
+`;
+}
