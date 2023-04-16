@@ -66,3 +66,6 @@ function init() {
     writeToFile('README.md', markdown);
   });
 }
+
+// call function to initialize
+init();
