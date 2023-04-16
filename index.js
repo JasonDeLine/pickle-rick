@@ -112,7 +112,7 @@ ${data.tests}
 
 If you have any questions, please contact the project owner by clicking on the email listed below. 
 
-[![GitHub followers](https://img.shields.io/github/followers/${data.githubUsername}?style=social)](https://github.com/${data.githubUsername})
+[![GitHub followers](https://img.shields.io/github/followers/${data.githubUsername}?style=social)](https://github.com/${data.githubUsername}/readme-generator)
 [${data.email}](mailto:${data.email})
 `;
 }
