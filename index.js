@@ -59,20 +59,65 @@ function writeToFile(fileName, data) {
   );
 }
 
-// function that initializes program
-function init() {
-  inquirer.prompt(questions).then((answers) => {
-    const markdown = generateMarkdown(answers);
-    writeToFile('README.md', markdown);
+/// function to clear cache of previously entered responses
+function clearCache() {
+  inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'clearCache',
+      message: 'Do you want to clear the cache of previous responses?',
+      default: false,
+    },
+  ]).then((answers) => {
+    if (answers.clearCache) {
+      inquirer.prompt(questions).then((newAnswers) => {
+        const data = JSON.stringify(newAnswers);
+        fs.writeFileSync('.cache.json', data);
+      });
+    } else {
+      console.log('Using cached responses.');
+    }
   });
 }
 
+// function that initializes program
+function init() {
+  clearCache(); // call the clearCache function before prompting the user for input
+}
+function init() {
+  // check if there is data in the cache
+  let cachedData = {};
+  try {
+    cachedData = JSON.parse(fs.readFileSync('./cache.json'));
+  } catch (err) {
+    // ignore errors, assume cache is empty
+  }
 
+  // merge cached data with user input
+  const questionsWithData = questions.map(question => {
+    const cachedAnswer = cachedData[question.name];
+    if (cachedAnswer !== undefined) {
+      return {...question, default: cachedAnswer};
+    }
+    return question;
+  });
 
+  inquirer.prompt(questionsWithData).then((answers) => {
+    const markdown = generateMarkdown(answers);
+    writeToFile('README.md', markdown);
+
+    // update the cache with the latest answers
+    fs.writeFile('./cache.json', JSON.stringify(answers), (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+  });
+}
 // call function to initialize
 init();
 
-
+// ***************************
 function generateMarkdown(data) {
   return `
 # ${data.title}
