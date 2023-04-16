@@ -51,3 +51,10 @@ const questions = [
     message: 'What is your email address?',
   },
 ];
+
+// write to the readme file
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, (err) =>
+    err ? console.error(err) : console.log('README file generated successfully!')
+  );
+}
